@@ -1,13 +1,162 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/**
+ * File: src/index.css
+ * Purpose: Global styles for the application
+ * Dependencies:
+ *   - Applied to entire application
+ * 
+ * This stylesheet provides global styles, CSS variables,
+ * and reset styles for the application.
+ */
+
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+/* CSS Variables */
+:root {
+  /* Colors - Dark Theme (Default) */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2c2c2c;
+  --text-primary: #f0f0f0;
+  --text-secondary: #d0d0d0;
+  --border-color: #444;
+  
+  /* Pokemon Type Colors */
+  --color-water: #6390F0;
+  --color-fire: #EE8130;
+  --color-grass: #7AC74C;
+  --color-electric: #F7D02C;
+  --color-psychic: #F95587;
+  --color-fighting: #C22E28;
+  --color-dark: #705746;
+  --color-metal: #B7B7CE;
+  --color-normal: #A8A77A;
+  --color-fairy: #D685AD;
+  
+  /* UI Colors */
+  --primary: #6390F0;
+  --secondary: #7AC74C;
+  --danger: #EE8130;
+  --warning: #F7D02C;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Font Sizes */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 24px;
+  --text-xxl: 32px;
+  
+  /* Card Dimensions */
+  --card-width: 747px;
+  --card-height: 1038px;
+  --card-ratio: 1.39;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Light Theme Variables */
+[data-theme="light"] {
+  --bg-primary: #f0f0f0;
+  --bg-secondary: #e0e0e0;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --border-color: #ccc;
+}
+
+/* Reset Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: var(--text-md);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Three.js Background Container */
+#threejs-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background-color: #0a0514;
+}
+
+/* Utility Classes */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #777;
 }

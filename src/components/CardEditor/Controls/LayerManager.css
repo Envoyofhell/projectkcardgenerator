@@ -1,0 +1,101 @@
+/**
+ * File: src/components/CardEditor/Controls/LayerManager.css
+ * Purpose: Styles for the LayerManager component
+ * Dependencies:
+ *   - src/components/CardEditor/Controls/LayerManager.jsx
+ * 
+ * This stylesheet provides styles for the layer management UI.
+ */
+
+ .layer-manager {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .layer-manager h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #f0f0f0;
+    font-size: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+  }
+  
+  .layer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .layer-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #2c2c2c;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .layer-item:hover {
+    background-color: #3c3c3c;
+  }
+  
+  .layer-item.selected {
+    background-color: rgba(99, 144, 240, 0.2);
+    border-left: 3px solid #6390F0;
+  }
+  
+  .drag-handle {
+    margin-right: 10px;
+    color: #999;
+    cursor: grab;
+  }
+  
+  .visibility-toggle {
+    background: none;
+    border: none;
+    color: #d0d0d0;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 10px;
+  }
+  
+  .visibility-toggle:hover {
+    color: #f0f0f0;
+  }
+  
+  .layer-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+  }
+  
+  .layer-controls {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .layer-controls button {
+    background: none;
+    border: none;
+    color: #d0d0d0;
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  .layer-controls button:hover {
+    color: #f0f0f0;
+  }
+  
+  .layer-controls button:disabled {
+    color: #666;
+    cursor: not-allowed;
+  }

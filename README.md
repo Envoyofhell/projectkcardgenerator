@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+markdown# Pokémon Card Maker - Enhanced Dual Type Edition
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern web application for creating custom Pokémon cards with support for dual-type cards, custom masks, and interactive editing.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Create custom Pokémon cards with all standard fields
+- Dual-type support with customizable type masks
+- Interactive drag-and-drop layer management
+- Card templates for quick start
+- Multiple export options (PNG, card sheets)
+- Live preview with Fabric.js canvas engine
+- Animated Three.js background
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Prerequisites
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Node.js (v16 or later)
+- npm or pnpm package manager
 
-### `npm test`
+### Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository
+   ```bash
+   git clone https://github.com/yourusername/pokemon-card-maker.git
+   cd pokemon-card-maker
 
-### `npm run build`
+Install dependencies
+bashnpm install
+# or using pnpm
+pnpm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Start the development server
+bashnpm start
+# or using pnpm
+pnpm start
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Open your browser to http://localhost:5173
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Project Structure
+The application follows a modern React application structure:
 
-### `npm run eject`
+src/components - React components
+src/store - Zustand state management
+src/services - Service modules for card operations
+src/utils - Utility functions and data
+src/assets - Static assets (images, backgrounds, etc.)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Built With
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+React - UI framework
+Fabric.js - Canvas manipulation
+Zustand - State management
+Three.js - 3D background effects
+html2canvas - HTML to canvas export
+react-beautiful-dnd - Drag and drop for layers
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Acknowledgments
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Pokémon is a trademark of Nintendo, Game Freak, and The Pokémon Company
+This project is for educational and personal use only
+Original dual-type-cardmaker project for inspiration
 
-## Learn More
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# File 39: vite.config.js
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```javascript
+/**
+ * File: vite.config.js
+ * Purpose: Vite configuration for the application
+ * Dependencies:
+ *   - vite
+ *   - @vitejs/plugin-react
+ * 
+ * This file configures the Vite build system for the application.
+ */
 
-### Code Splitting
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@store': path.resolve(__dirname, './src/store'),
+      '@services': path.resolve(__dirname, './src/services'),
+      '@utils': path.resolve(__dirname, './src/utils'),
+      '@assets': path.resolve(__dirname, './src/assets'),
+    },
+  },
+  server: {
+    port: 5173,
+    open: true,
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: true,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: false,
+      },
+    },
+  },
+});

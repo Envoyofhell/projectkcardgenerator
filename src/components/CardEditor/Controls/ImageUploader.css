@@ -1,0 +1,89 @@
+/**
+ * File: src/components/CardEditor/Controls/ImageUploader.css
+ * Purpose: Styles for the ImageUploader component
+ * Dependencies:
+ *   - src/components/CardEditor/Controls/ImageUploader.jsx
+ * 
+ * This stylesheet provides styles for the image upload area.
+ */
+
+ .image-uploader {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .image-uploader h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #f0f0f0;
+    font-size: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+  }
+  
+  .upload-area {
+    width: 100%;
+    aspect-ratio: 3/4;
+    max-height: 240px;
+    background-color: #2c2c2c;
+    border: 2px dashed #444;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    overflow: hidden;
+  }
+  
+  .upload-area:hover {
+    border-color: #6390F0;
+    background-color: #3c3c3c;
+  }
+  
+  .upload-area.dragging {
+    border-color: #F7D02C;
+    background-color: rgba(247, 208, 44, 0.1);
+  }
+  
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #999;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .upload-icon {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  
+  .placeholder p {
+    font-size: 14px;
+  }
+  
+  .preview-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  .remove-image {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: rgba(238, 129, 48, 0.2);
+    color: #EE8130;
+    border: 1px solid #EE8130;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  }
+  
+  .remove-image:hover {
+    background-color: rgba(238, 129, 48, 0.3);
+  }

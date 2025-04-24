@@ -1,40 +1,71 @@
-.App {
+/**
+ * File: src/App.css
+ * Purpose: Styles for the main App component
+ * Dependencies:
+ *   - src/App.jsx
+ * 
+ * This stylesheet provides styles for the main application layout.
+ */
+
+ .app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: rgba(0, 0, 0, 0.5);
   text-align: center;
-  font-family: Arial, sans-serif;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.App-header {
-  background-color: #282c34;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  color: white;
+.app-header h1 {
+  font-size: var(--text-xxl);
+  margin-bottom: var(--spacing-xs);
+  color: var(--primary);
+  text-shadow: 0 0 10px rgba(99, 144, 240, 0.5);
 }
 
-.container {
-  display: flex;
+.subtitle {
+  color: var(--text-secondary);
+  font-size: var(--text-md);
+}
+
+.app-main {
+  flex: 1;
+  padding: var(--spacing-lg);
+  max-width: 1800px;
+  margin: 0 auto;
   width: 100%;
-  margin: 20px;
-  height: calc(100vh - 40px); /* Full height minus the margins */
 }
 
-.image-section,
-.button-section {
-  flex: 1; /* Each section takes up half of the container */
-  margin: 0 10px; /* Margin between sections */
-  padding: 20px;
-  width: 50%;
-  height: auto;
-  box-sizing: border-box;
-  border: 1px solid #373f50;
-  background-color: #373f50;
-  border-radius: 15px;
+.app-footer {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
 }
 
-.image {
-  width: 100%; /* Ensure the image takes up full width */
-  height: auto;
-  max-height: 100%; /* Ensure the image is responsive */
+.app-footer small {
   display: block;
+  margin-top: var(--spacing-xs);
+  font-size: var(--text-xs);
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .app-header h1 {
+    font-size: var(--text-xl);
+  }
+  
+  .subtitle {
+    font-size: var(--text-sm);
+  }
+  
+  .app-main {
+    padding: var(--spacing-md);
+  }
 }

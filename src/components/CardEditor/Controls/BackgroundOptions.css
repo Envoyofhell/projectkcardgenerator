@@ -1,0 +1,100 @@
+/**
+ * File: src/components/CardEditor/Controls/BackgroundOptions.css
+ * Purpose: Styles for the BackgroundOptions component
+ * Dependencies:
+ * - src/components/CardEditor/Controls/BackgroundOptions.jsx
+ *
+ * This stylesheet provides styles for selecting card backgrounds.
+ */
+
+ .background-options {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .background-options h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #f0f0f0;
+    font-size: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+  }
+  
+  /* Styles for a potential grid of background choices */
+  .background-grid {
+    display: grid;
+    /* Adjust columns based on how many options you have per row */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .background-item {
+    aspect-ratio: 9 / 16; /* Example aspect ratio, adjust as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2c2c2c; /* Placeholder background */
+    border: 2px solid transparent;
+    border-radius: 6px;
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    overflow: hidden; /* Prevents content spill */
+    position: relative; /* For potential overlays or text */
+  }
+  
+  .background-item:hover {
+    border-color: #6390F0; /* Blue hover border */
+    transform: scale(1.05);
+  }
+  
+  .background-item.selected {
+    border-color: #F7D02C; /* Yellow selected border */
+    box-shadow: 0 0 0 2px rgba(247, 208, 44, 0.3); /* Optional glow for selected */
+  }
+  
+  /* Style for preview images inside the grid items */
+  .background-item img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Or 'contain', depending on desired preview */
+    border-radius: 4px;
+  }
+  
+  /* Add styles for other potential controls like upload buttons or inputs */
+  /* Example:
+  .upload-background-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: rgba(99, 144, 240, 0.2);
+    color: #6390F0;
+    border: 1px solid #6390F0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  }
+  
+  .upload-background-button:hover {
+    background-color: rgba(99, 144, 240, 0.3);
+  }
+  */
+  
+  /* Media queries similar to TypeSelector.css if needed */
+  @media (max-width: 768px) {
+    .background-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .background-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }

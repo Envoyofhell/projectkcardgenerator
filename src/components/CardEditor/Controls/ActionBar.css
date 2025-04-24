@@ -1,0 +1,74 @@
+/**
+ * File: src/components/CardEditor/Controls/ActionBar.css
+ * Purpose: Styles for the ActionBar component
+ * Dependencies:
+ *   - src/components/CardEditor/Controls/ActionBar.jsx
+ * 
+ * This stylesheet provides styles for the action buttons.
+ */
+
+ .action-bar {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    margin-top: 15px;
+  }
+  
+  .action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #444;
+    color: #f0f0f0;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+  }
+  
+  .action-button svg {
+    margin-right: 6px;
+  }
+  
+  .action-button:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+  }
+  
+  .action-button:active {
+    transform: translateY(0);
+  }
+  
+  .action-button.primary {
+    background-color: #6390F0;
+    color: #fff;
+  }
+  
+  .action-button.primary:hover {
+    background-color: #4A7FE8;
+  }
+  
+  .action-button.danger {
+    background-color: #EE8130;
+    color: #fff;
+  }
+  
+  .action-button.danger:hover {
+    background-color: #D96A1A;
+  }
+  
+  @media (max-width: 768px) {
+    .action-bar {
+      flex-wrap: wrap;
+    }
+    
+    .action-button {
+      flex: 1;
+      min-width: 120px;
+    }
+  }

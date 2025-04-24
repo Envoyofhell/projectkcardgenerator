@@ -1,0 +1,113 @@
+/**
+ * File: src/components/CardEditor/Controls/AttackEditor.css
+ * Purpose: Styles for the AttackEditor component
+ * Dependencies:
+ *   - src/components/CardEditor/Controls/AttackEditor.jsx
+ * 
+ * This stylesheet provides styles for the attack editor interface.
+ */
+
+ .attack-editor {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .attack-editor h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #f0f0f0;
+    font-size: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+  }
+  
+  .energy-cost-container {
+    margin-bottom: 15px;
+  }
+  
+  .energy-cost-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    min-height: 34px;
+  }
+  
+  .energy-type-tag {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 4px 8px 4px 4px;
+  }
+  
+  .energy-type-tag img {
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+  }
+  
+  .remove-energy {
+    background: none;
+    border: none;
+    color: #f0f0f0;
+    font-size: 14px;
+    padding: 2px 4px;
+    margin-left: 4px;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  
+  .remove-energy:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .add-energy-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 4px 10px;
+    color: #d0d0d0;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .add-energy-button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  .energy-type-selector {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #2c2c2c;
+    border-radius: 6px;
+  }
+  
+  .energy-type-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .energy-type-option:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+  }
+  
+  .energy-type-option img {
+    width: 30px;
+    height: 30px;
+  }

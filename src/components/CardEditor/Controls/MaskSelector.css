@@ -1,0 +1,109 @@
+/**
+ * File: src/components/CardEditor/Controls/MaskSelector.css
+ * Purpose: Styles for the MaskSelector component
+ * Dependencies:
+ * - src/components/CardEditor/Controls/MaskSelector.jsx
+ *
+ * This stylesheet provides styles for the mask selection interface.
+ */
+
+ .mask-selector {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.mask-selector h3 {
+  margin-top: 0;
+  margin-bottom: 10px; /* Reduced margin */
+  color: #f0f0f0;
+  font-size: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+}
+
+.mask-description {
+  color: #d0d0d0;
+  font-size: 14px;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+/* Optional Preview Canvas Styles (If you uncomment the canvas in JSX) */
+.mask-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.mask-preview-canvas {
+  border: 1px solid #444; /* Slightly thinner border */
+  border-radius: 4px; /* Match item radius */
+  background-color: #2c2c2c;
+  /* Consider adding width/height here if not set on canvas element */
+}
+
+.mask-name {
+  margin-top: 6px;
+  color: #d0d0d0;
+  font-size: 12px; /* Smaller name */
+  text-align: center;
+}
+/* --- End Optional Preview --- */
+
+
+.mask-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* Adjust size */
+  gap: 12px; /* Slightly more gap */
+}
+
+.mask-item {
+  display: flex;
+  flex-direction: column; /* Stack image and name */
+  align-items: center;
+  justify-content: flex-start; /* Align content to top */
+  background-color: #2c2c2c;
+  border: 2px solid transparent;
+  border-radius: 4px; /* Smaller radius */
+  padding: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  aspect-ratio: 3 / 4.5; /* Maintain aspect ratio */
+  overflow: hidden;
+}
+
+.mask-item:hover {
+  border-color: #6390F0; /* Blue hover */
+  transform: translateY(-2px);
+  background-color: #3a3a3a;
+}
+
+.mask-item.selected {
+  border-color: #F7D02C; /* Yellow selected */
+  background-color: rgba(247, 208, 44, 0.1);
+}
+
+.mask-item img {
+  display: block;
+  width: 100%; /* Fill width */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 80%; /* Limit image height */
+  object-fit: contain; /* Scale image within bounds */
+  border-radius: 2px; /* Slight radius on image */
+  margin-bottom: 4px;
+}
+
+.mask-item-name {
+  font-size: 11px; /* Smaller text */
+  color: #d0d0d0;
+  text-align: center;
+  line-height: 1.2;
+  /* Prevent text overflow */
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
