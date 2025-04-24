@@ -1,160 +1,158 @@
 /**
  * File: src/services/maskSystem.js
- * Purpose: Handle mask application for dual-type cards using Fabric.js
+ * Purpose: Handle mask application logic for Fabric.js objects
+ * and generate HTML Canvas previews for the UI.
  * Dependencies:
  * - fabric.js library
- * - Used by the main Fabric.js canvas logic (e.g., Canvas.jsx, layerManager.js)
- *
- * This service applies masks to Fabric.js objects.
  */
 
 import { fabric } from 'fabric';
-// Note: We removed the import from maskService here as this file
-// primarily CONSUMES maskUrls, it doesn't need to provide the list or previews itself.
-// Preview generation for the UI (MaskSelector) can stay in maskService or here,
-// but keep it consistent. Let's keep the preview logic here for now.
+
+/**
+ * Creates a default diagonal clip path polygon for Fabric.js objects.
+ * @param {fabric.Object} targetObject - The Fabric object to calculate dimensions from.
+ * @returns {fabric.Polygon | null} A Fabric Polygon object or null if dimensions invalid.
+ */
+const createDefaultClipPath = (targetObject) => {
+    const width = targetObject.width || 0;
+    const height = targetObject.height || 0;
+    if (width <= 0 || height <= 0) {
+        console.warn("Cannot create default clip path for object with zero dimensions:", targetObject.id);
+        return null;
+    }
+    return new fabric.Polygon(
+        [ { x: 0, y: 0 }, { x: width, y: 0 }, { x: 0, y: height } ],
+        {
+            left: -width / 2, // Position relative to object's center for polygon
+            top: -height / 2,
+            absolutePositioned: true, // Crucial for clipPath relative to bounding box
+        }
+    );
+};
 
 /**
  * Apply a mask to a Fabric.js object using clipPath.
- * Returns an object with properties to set on the target Fabric object.
+ * Returns an object with the clipPath property to set on the target Fabric object.
  * @param {fabric.Object} targetObject - Fabric.js object to mask (e.g., an Image).
  * @param {string} maskUrl - URL to mask image (e.g., '/img/masks/mask1.png'), or empty/null for default clip path.
- * @param {number} cardWidth - The original width of the card template being masked.
- * @param {number} cardHeight - The original height of the card template being masked.
+ * @param {number} cardWidth - The original width of the card template (can be used for scaling logic if needed).
+ * @param {number} cardHeight - The original height of the card template (can be used for scaling logic if needed).
  * @returns {Promise<{ clipPath: fabric.Image | fabric.Polygon | null }>} Object containing the clipPath property.
  */
 export const applyFabricMask = (targetObject, maskUrl, cardWidth, cardHeight) => {
-  return new Promise((resolve) => {
-    // Use default diagonal clip-path if no mask specified
-    if (!maskUrl || maskUrl === '') {
-      console.log("Applying default Fabric polygon clipPath");
-      resolve({
-        clipPath: new fabric.Polygon(
-          [ // Points defining the top-left triangle
-            { x: 0, y: 0 },
-            { x: targetObject.width, y: 0 },
-            { x: 0, y: targetObject.height },
-          ],
-          {
-            // Position the clip path relative to the object's center
-            left: -targetObject.width / 2,
-            top: -targetObject.height / 2,
-            absolutePositioned: true, // Make sure it clips correctly regardless of object transform
-          }
-        ),
-      });
-      return;
-    }
-
-    // Use image mask
-    console.log("Applying Fabric image clipPath:", maskUrl);
-    // Ensure the URL starts with '/' if it's coming from the public dir root
-    const absoluteMaskUrl = maskUrl.startsWith('/') ? maskUrl : `/${maskUrl}`;
-
-    fabric.Image.fromURL(
-      absoluteMaskUrl,
-      (img) => {
-        if (!img) {
-           console.error("Fabric.js failed to load mask image:", absoluteMaskUrl);
-           // Fallback to default or resolve with no clipPath
-           resolve({ clipPath: null }); // Or resolve with default polygon?
-           return;
+    return new Promise((resolve) => {
+        // Ensure target object is valid and has dimensions before proceeding
+        if (!targetObject || !targetObject.width || !targetObject.height) {
+             console.warn(`applyFabricMask: Target object (${targetObject?.id}) is invalid or has zero dimensions.`);
+             resolve({ clipPath: null });
+             return;
         }
 
-        // Scale the mask image to fit the target object's dimensions
-        img.set({
-          left: -targetObject.width / 2,
-          top: -targetObject.height / 2,
-          originX: 'left',
-          originY: 'top',
-          // Ensure the mask image itself isn't cliped by something else
-          clipPath: undefined,
-        });
-         // Scale mask image to match the card dimensions it was designed for,
-         // then let Fabric handle scaling it with the target object if needed.
-        img.scaleToWidth(targetObject.width);
-        //img.scaleToHeight(targetObject.height); // scaleToWidth usually preserves aspect ratio
+        // Use default diagonal clip-path if no mask specified
+        if (!maskUrl || maskUrl === '') {
+            console.log(`Applying default Fabric polygon clipPath to ${targetObject.id}`);
+            try {
+                resolve({ clipPath: createDefaultClipPath(targetObject) });
+            } catch (error) {
+                console.error(`Error creating default polygon clipPath for ${targetObject.id}:`, error);
+                resolve({ clipPath: null });
+            }
+            return;
+        }
 
-        resolve({
-          clipPath: img, // Use the loaded Fabric Image as the clipPath
-        });
-      },
-      { // Options object for fromURL
-        // Handle potential CORS issues if masks are hosted elsewhere (unlikely for public/)
-        crossOrigin: 'anonymous'
-      }
-    );
-  });
+        // Use image mask
+        console.log(`Applying Fabric image clipPath (${maskUrl}) to ${targetObject.id}`);
+        const absoluteMaskUrl = maskUrl.startsWith('/') ? maskUrl : `/${maskUrl}`;
+
+        fabric.Image.fromURL(
+            absoluteMaskUrl,
+            (img, isError) => {
+                if (isError || !img || img.width === 0 || img.height === 0) {
+                    const errorMsg = `Fabric.js failed to load mask image or image has zero dimensions: ${absoluteMaskUrl}`;
+                    console.error(errorMsg);
+                    resolve({ clipPath: null }); // Resolve with null on error
+                    return;
+                }
+
+                console.log(`Mask image ${absoluteMaskUrl} loaded successfully for Fabric clipPath.`);
+                // Position mask at the top-left relative to the target's *origin*.
+                // Fabric scales the clipPath with the object it's applied to.
+                img.set({
+                    left: 0,
+                    top: 0,
+                    originX: 'center',
+                    originY: 'center',
+                    clipPath: undefined,
+                });
+                // Scale mask image initially to match the target object's current size
+                img.scaleToWidth(targetObject.getScaledWidth());
+                img.scaleToHeight(targetObject.getScaledHeight());
+
+                resolve({ clipPath: img });
+            },
+            { crossOrigin: 'anonymous' }
+        );
+    });
 };
 
 
 /**
- * Draw a preview of the mask effect onto an HTML Canvas.
+ * Draw a preview of the mask effect onto an HTML Canvas (for UI).
  * @param {HTMLCanvasElement} canvas - Canvas element to draw the preview on.
  * @param {string} maskUrl - URL to the mask image (e.g., '/img/masks/mask1.png') or empty/null for default.
- * @param {string} primaryColor - CSS color string for the primary type.
- * @param {string} secondaryColor - CSS color string for the secondary type.
+ * @param {string} primaryColor - CSS color string for the primary type (bottom layer).
+ * @param {string} secondaryColor - CSS color string for the secondary type (top layer being masked).
  */
 export const createMaskPreview = (canvas, maskUrl, primaryColor, secondaryColor) => {
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
+    if (!canvas) { console.error("createMaskPreview: Invalid canvas element provided."); return; }
+    const ctx = canvas.getContext('2d');
+    if (!ctx) { console.error("createMaskPreview: Failed to get 2D context."); return; }
 
-  const width = canvas.width;
-  const height = canvas.height;
+    const width = canvas.width;
+    const height = canvas.height;
 
-  // Clear previous drawing
-  ctx.clearRect(0, 0, width, height);
-  // Reset composite operation
-  ctx.globalCompositeOperation = 'source-over';
+    // Reset canvas state
+    ctx.clearRect(0, 0, width, height);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
 
-  // Fill with primary color (bottom layer)
-  ctx.fillStyle = primaryColor;
-  ctx.fillRect(0, 0, width, height);
+    // 1. Draw primary color
+    ctx.fillStyle = primaryColor || '#cccccc'; // Use fallback
+    ctx.fillRect(0, 0, width, height);
 
-  // Draw secondary color (top layer)
-  ctx.fillStyle = secondaryColor;
-  ctx.fillRect(0, 0, width, height); // Fill entirely first
+    // 2. Draw secondary color
+    ctx.fillStyle = secondaryColor || '#aaaaaa'; // Use fallback
+    ctx.fillRect(0, 0, width, height);
 
-  // Apply mask or default clip
-  if (!maskUrl || maskUrl === '') {
-    // Draw default diagonal clip-path preview by erasing the top-right part
-    console.log("Drawing default diagonal preview");
-    ctx.globalCompositeOperation = 'destination-out'; // Erase where we draw
-    ctx.beginPath();
-    ctx.moveTo(width, 0); // Top-right corner
-    ctx.lineTo(width, height); // Bottom-right corner
-    ctx.lineTo(0, height); // Bottom-left corner
-    ctx.closePath();
-    ctx.fill(); // Erase the bottom-right triangle, leaving the top-left (secondary color)
+    // 3. Apply mask or default clip
+    if (!maskUrl || maskUrl === '') {
+        // Default diagonal preview (erase bottom-right)
+        console.log("Drawing default diagonal preview");
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.fillStyle = 'rgb(0, 0, 0)';
+        ctx.beginPath(); ctx.moveTo(width, 0); ctx.lineTo(width, height); ctx.lineTo(0, height);
+        ctx.closePath(); ctx.fill();
+    } else {
+        // Load mask image and use it to clip the secondary color
+        console.log("Drawing image mask preview for:", maskUrl);
+        const maskImg = new Image();
+        const absoluteMaskUrl = maskUrl.startsWith('/') ? maskUrl : `/${maskUrl}`;
 
-  } else {
-    // Load mask image and use it to clip the secondary color
-    console.log("Drawing image mask preview for:", maskUrl);
-    const maskImg = new Image();
-    // Ensure the URL starts with '/' if it's coming from the public dir root
-    const absoluteMaskUrl = maskUrl.startsWith('/') ? maskUrl : `/${maskUrl}`;
-
-    maskImg.onload = () => {
-      // Use the mask image to define where the secondary color (already drawn) is kept
-      ctx.globalCompositeOperation = 'destination-in';
-      ctx.drawImage(maskImg, 0, 0, width, height);
-
-      // Reset composite operation for subsequent draws (important!)
-      ctx.globalCompositeOperation = 'source-over';
-    };
-    maskImg.onerror = () => {
-        console.error("Failed to load mask image for preview:", absoluteMaskUrl);
-        // Optionally draw an error state on the preview canvas
-        ctx.globalCompositeOperation = 'source-over'; // Reset
-        ctx.fillStyle = 'red';
-        ctx.font = '12px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('Error', width / 2, height / 2);
-    };
-    maskImg.src = absoluteMaskUrl;
-  }
-
-   // Reset composite operation just in case
-   ctx.globalCompositeOperation = 'source-over';
+        maskImg.onload = () => {
+            console.log("Mask image loaded for preview:", absoluteMaskUrl);
+            ctx.globalCompositeOperation = 'destination-in'; // Keep where mask is opaque/white
+            ctx.drawImage(maskImg, 0, 0, width, height);
+            ctx.globalCompositeOperation = 'source-over'; // Reset
+        };
+        maskImg.onerror = () => {
+            console.error("Failed to load mask image for preview:", absoluteMaskUrl);
+            ctx.globalCompositeOperation = 'source-over'; // Reset
+            ctx.fillStyle = 'red'; ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center'; ctx.fillText('Error', width / 2, height / 2);
+        };
+        maskImg.crossOrigin = 'anonymous';
+        maskImg.src = absoluteMaskUrl;
+    }
+    // Reset composite operation after drawing
+    ctx.globalCompositeOperation = 'source-over';
 };
